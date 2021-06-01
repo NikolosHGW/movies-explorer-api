@@ -21,7 +21,8 @@
   "homepage": "https://github.com/NikolosHGW/movies-explorer-api#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.12.12"
+    "mongoose": "^5.12.12",
+    "validator": "^13.6.0"
   },
   "devDependencies": {
     "eslint": "^7.27.0",
