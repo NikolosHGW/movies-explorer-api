@@ -1,5 +1,9 @@
+const { errors, celebrate, Joi } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
+const { createUser, login } = require('./controllers/users');
+const HandError = require('./errors/HandError');
+const userRout = require('./routes/users');
 
 const { PORT = 3001 } = process.env;
 
@@ -11,6 +15,27 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
+
+app.post('/signin', express.json(), celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), login);
+app.post('/signup', express.json(), celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+    name: Joi.string().min(2).max(30),
+  }),
+}), createUser);
+app.use(userRout);
+
+app.use(() => {
+  throw new HandError('Запрашиваемый ресурс не найден', 404);
+});
+
+app.use(errors());
 
 app.use((err, _req, res, next) => {
   const { statusCode = 500, message } = err;
