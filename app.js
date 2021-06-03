@@ -1,23 +1,25 @@
 const { errors, celebrate, Joi } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 const { createUser, login } = require('./controllers/users');
 const HandError = require('./errors/HandError');
 const userRout = require('./routes/users');
 const movieRout = require('./routes/movies');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3000, NODE_ENV, NAME_DB } = process.env;
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+mongoose.connect(`mongodb://localhost:27017/${NODE_ENV === 'production' ? NAME_DB : 'bitfilmsdb'}`, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
 
+app.use(helmet());
 app.use(requestLogger);
 app.post('/signin', express.json(), celebrate({
   body: Joi.object().keys({
@@ -36,8 +38,7 @@ app.post('/logout', (_, res, next) => {
   try {
     res.clearCookie('jwt', {
       httpOnly: true,
-      sameSite: true, // должно быть 'none'
-      // secure: true,
+      sameSite: true,
     }).end();
   } catch (err) {
     next(err);

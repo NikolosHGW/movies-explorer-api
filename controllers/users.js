@@ -68,8 +68,7 @@ function login(req, res, next) {
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
-        sameSite: true, // должно быть 'none'
-        // secure: true,
+        sameSite: true,
       }).send({ _id });
     })
     .catch(next);
