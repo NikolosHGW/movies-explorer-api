@@ -30,6 +30,17 @@ app.post('/signup', express.json(), celebrate({
     name: Joi.string().required().min(2).max(30),
   }),
 }), createUser);
+app.post('/logout', (_, res, next) => {
+  try {
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      sameSite: true, // должно быть 'none'
+      // secure: true,
+    }).end();
+  } catch (err) {
+    next(err);
+  }
+});
 app.use(userRout);
 app.use(movieRout);
 
