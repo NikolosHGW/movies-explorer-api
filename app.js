@@ -5,6 +5,7 @@ const { createUser, login } = require('./controllers/users');
 const HandError = require('./errors/HandError');
 const userRout = require('./routes/users');
 const movieRout = require('./routes/movies');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3001 } = process.env;
 
@@ -17,6 +18,7 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useUnifiedTopology: true,
 });
 
+app.use(requestLogger);
 app.post('/signin', express.json(), celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -47,6 +49,8 @@ app.use(movieRout);
 app.use(() => {
   throw new HandError('Запрашиваемый ресурс не найден', 404);
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 
