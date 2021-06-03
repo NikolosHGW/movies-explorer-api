@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const { createUser, login } = require('./controllers/users');
 const HandError = require('./errors/HandError');
 const userRout = require('./routes/users');
+const movieRout = require('./routes/movies');
 
 const { PORT = 3001 } = process.env;
 
@@ -26,10 +27,11 @@ app.post('/signup', express.json(), celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().required().min(2).max(30),
   }),
 }), createUser);
 app.use(userRout);
+app.use(movieRout);
 
 app.use(() => {
   throw new HandError('Запрашиваемый ресурс не найден', 404);
