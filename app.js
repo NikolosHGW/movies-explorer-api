@@ -8,7 +8,7 @@ const userRout = require('./routes/users');
 const movieRout = require('./routes/movies');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3000, NODE_ENV, NAME_DB } = process.env;
+const { PORT = 3001, NODE_ENV, NAME_DB } = process.env;
 
 const app = express();
 
