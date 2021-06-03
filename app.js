@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { errors, celebrate, Joi } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
