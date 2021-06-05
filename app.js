@@ -12,9 +12,11 @@ const auth = require('./middlewares/auth');
 
 const { PORT = 3001, NODE_ENV, NAME_DB } = process.env;
 
+const mongoPath = NODE_ENV === 'production' ? NAME_DB : 'mongodb://localhost:27017/bitfilmsdb';
+
 const app = express();
 
-mongoose.connect(`mongodb://localhost:27017/${NODE_ENV === 'production' ? NAME_DB : 'bitfilmsdb'}`, {
+mongoose.connect(mongoPath, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
