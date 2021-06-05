@@ -48,6 +48,11 @@ function updateUser(req, res, next) {
     _id,
     { email, name },
     { new: true, runValidators: true, upsert: false },
+    (err) => {
+      if (err) {
+        next(new HandError('Такой email уже существует', 409));
+      }
+    },
   )
     .orFail(getIdError())
     .then((user) => res.send(user))
