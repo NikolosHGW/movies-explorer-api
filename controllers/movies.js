@@ -49,8 +49,7 @@ function deleteMovie(req, res, next) {
       if (movie.owner.toString() !== _id) {
         throw new HandError('Нельзя удалить чужой фильм?', 403);
       }
-      return movieModel.findByIdAndRemove(movieId)
-        .orFail(new HandError('Фильм с указанным _id не найдена', 404))
+      return movie.remove()
         .then(() => res.send({ message: 'Фильм удалён' }));
     })
     .catch(next);
