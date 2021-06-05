@@ -19,7 +19,7 @@ router.post('/movies', express.json(), cookieParser(), auth, celebrate({
   body: Joi.object().keys({
     country: Joi.string().required(),
     director: Joi.string().required(),
-    duration: Joi.string().required(),
+    duration: Joi.number().integer().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
     image: Joi.string().required().custom(validateUrl),
