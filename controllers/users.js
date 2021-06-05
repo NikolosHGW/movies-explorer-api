@@ -36,8 +36,9 @@ function createUser(req, res, next) {
     .catch((err) => {
       if (err.code === 11000) {
         next(new HandError('Такой email уже существует', 409));
+      } else {
+        next(err);
       }
-      next(err);
     });
 }
 
