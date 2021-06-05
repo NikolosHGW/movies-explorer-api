@@ -1,13 +1,14 @@
 require('dotenv').config();
-const { errors, celebrate, Joi } = require('celebrate');
+const { errors } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
-const { createUser, login } = require('./controllers/users');
+const cookieParser = require('cookie-parser');
 const HandError = require('./errors/HandError');
 const userRout = require('./routes/users');
 const movieRout = require('./routes/movies');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const auth = require('./middlewares/auth');
 
 const { PORT = 3001, NODE_ENV, NAME_DB } = process.env;
 
@@ -22,19 +23,6 @@ mongoose.connect(`mongodb://localhost:27017/${NODE_ENV === 'production' ? NAME_D
 
 app.use(helmet());
 app.use(requestLogger);
-app.post('/signin', express.json(), celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
-  }),
-}), login);
-app.post('/signup', express.json(), celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
-    name: Joi.string().required().min(2).max(30),
-  }),
-}), createUser);
 app.post('/logout', (_, res, next) => {
   try {
     res.clearCookie('jwt', {
@@ -48,7 +36,7 @@ app.post('/logout', (_, res, next) => {
 app.use(userRout);
 app.use(movieRout);
 
-app.use(() => {
+app.use(cookieParser(), auth, () => {
   throw new HandError('Запрашиваемый ресурс не найден', 404);
 });
 
