@@ -45,7 +45,7 @@ app.post('/logout', (_, res, next) => {
       httpOnly: true,
       sameSite: 'none',
       secure: true,
-    }).end({ message: 'Clear Coockie' });
+    }).send({ message: 'Clear Coockie' });
   } catch (err) {
     next(err);
   }
