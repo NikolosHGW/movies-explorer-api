@@ -3,6 +3,7 @@ const { errors } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const HandError = require('./errors/HandError');
 const userRout = require('./routes/users');
@@ -16,6 +17,17 @@ const mongoPath = NODE_ENV === 'production' ? NAME_DB : 'mongodb://localhost:270
 
 const app = express();
 
+const whitelist = ['https://mymovies.nomoredomains.club', 'http://localhost:3000'];
+const corsOptions = {
+  origin(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
 mongoose.connect(mongoPath, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -24,6 +36,7 @@ mongoose.connect(mongoPath, {
 });
 
 app.use(helmet());
+app.use(cors(corsOptions));
 app.use(requestLogger);
 app.post('/logout', (_, res, next) => {
   try {
