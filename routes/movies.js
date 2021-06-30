@@ -33,7 +33,7 @@ router.post('/movies', express.json(), cookieParser(), auth, celebrate({
 
 router.delete('/movies/:movieId', cookieParser(), auth, celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().hex().length(24),
+    movieId: Joi.string().hex(),
   }),
 }), deleteMovie);
 
