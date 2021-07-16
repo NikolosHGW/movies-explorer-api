@@ -76,7 +76,7 @@ function login(req, res, next) {
         httpOnly: true,
         sameSite: 'none',
         secure: true,
-        domain: 'mymovies.nomoredomains.',
+        domain: 'mymovies.nomoredomains.icu',
       }).cookie('isLogged', 'true', {
         maxAge: 3600000 * 24 * 7,
       }).send({ _id });
