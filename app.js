@@ -43,8 +43,6 @@ app.post('/logout', (_, res, next) => {
   try {
     res.clearCookie('jwt', {
       httpOnly: true,
-      sameSite: 'none',
-      secure: true,
     }).clearCookie('isLogged').send({ message: 'Clear Coockie' });
   } catch (err) {
     next(err);
