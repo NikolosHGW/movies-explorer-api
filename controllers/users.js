@@ -76,6 +76,7 @@ function login(req, res, next) {
         httpOnly: true,
         sameSite: 'none',
         secure: true,
+        domain: NODE_ENV === 'production' ? '.mymovies.nomoredomains.club' : 'http://localhost:3000',
       }).cookie('isLogged', 'true', {
         maxAge: 3600000 * 24 * 7,
       }).send({ _id });
