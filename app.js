@@ -45,8 +45,9 @@ app.post('/logout', (_, res, next) => {
       httpOnly: true,
       sameSite: 'none',
       secure: true,
+    }).clearCookie('isLogged', {
       domain: 'mymovies.nomoredomains.icu',
-    }).clearCookie('isLogged').send({ message: 'Clear Coockie' });
+    }).send({ message: 'Clear Coockie' });
   } catch (err) {
     next(err);
   }
