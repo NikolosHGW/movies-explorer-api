@@ -74,12 +74,12 @@ function login(req, res, next) {
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
-        domain: '.nomoredomains.icu',
+        domain: '.nomoredomains.club',
         sameSite: 'none',
         secure: true,
       }).cookie('isLogged', 'true', {
         maxAge: 3600000 * 24 * 7,
-        domain: '.nomoredomains.icu',
+        domain: '.nomoredomains.club',
       }).send({ _id });
     })
     .catch(next);
