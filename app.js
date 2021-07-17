@@ -43,12 +43,9 @@ app.post('/logout', (_, res, next) => {
   try {
     res.clearCookie('jwt', {
       httpOnly: true,
-      domain: '.nomoredomains.club',
       sameSite: 'none',
       secure: true,
-    }).clearCookie('isLogged', {
-      domain: '.nomoredomains.club',
-    }).send({ message: 'Clear Coockie' });
+    }).clearCookie('isLogged').send({ message: 'Clear Coockie' });
   } catch (err) {
     next(err);
   }
